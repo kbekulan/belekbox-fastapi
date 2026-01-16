@@ -29,18 +29,52 @@
             padding: 20px 0;
             border-bottom: 1px solid #E5E7EB;
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
             font-size: 24px;
             font-weight: bold;
             color: #059669;
+            flex-shrink: 0;
+        }
+
+        .header-center {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .whatsapp-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-icon {
+            width: 24px;
+            height: 24px;
         }
 
         .header-right {
             display: flex;
             align-items: center;
             gap: 20px;
+            flex-shrink: 0;
         }
 
         .social-icons {
@@ -50,21 +84,21 @@
         }
 
         .social-icon {
-            font-size: 24px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
             transition: transform 0.2s;
-            text-decoration: none;
         }
 
         .social-icon:hover {
             transform: scale(1.1);
         }
 
-        .whatsapp-icon {
+        .whatsapp-social {
             color: #25D366;
         }
 
-        .instagram-icon {
+        .instagram-social {
             color: #E1306C;
         }
 
@@ -405,13 +439,27 @@
         }
 
         .footer-social a {
-            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             text-decoration: none;
+            color: #6B7280;
             transition: transform 0.2s;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background-color: #F9FAFB;
         }
 
         .footer-social a:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+        }
+
+        .footer-social a.whatsapp {
+            color: #25D366;
+        }
+
+        .footer-social a.instagram {
+            color: #E1306C;
         }
 
         /* Модальное окно для фото */
@@ -424,13 +472,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .image-modal .close-modal {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
             color: white;
             border-radius: 50%;
             width: 40px;
@@ -438,14 +487,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            border: none;
+            font-size: 20px;
+            border: 2px solid white;
             cursor: pointer;
             z-index: 1001;
+            transition: background-color 0.2s;
         }
 
         .image-modal .close-modal:hover {
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 1);
         }
 
         #fullSizeImage {
@@ -506,12 +556,28 @@
                 padding: 15px;
             }
 
-            .header-right {
+            header {
+                flex-direction: column;
+                align-items: stretch;
                 gap: 15px;
             }
 
-            .social-icons {
-                gap: 10px;
+            .header-center {
+                order: 3;
+                width: 100%;
+            }
+
+            .logo {
+                text-align: center;
+            }
+
+            .header-right {
+                justify-content: center;
+            }
+
+            .whatsapp-header {
+                padding: 8px 16px;
+                font-size: 14px;
             }
 
             .toast {
@@ -522,11 +588,11 @@
             }
 
             .image-modal .close-modal {
-                top: 10px;
-                right: 10px;
+                top: 5px;
+                right: 5px;
                 width: 35px;
                 height: 35px;
-                font-size: 20px;
+                font-size: 18px;
             }
         }
 
@@ -537,17 +603,6 @@
 
             .banner {
                 padding: 20px 15px;
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
-
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
             }
 
             .delivery-info {
@@ -561,13 +616,27 @@
     <!-- Шапка -->
     <header>
         <div class="logo">BELEK BOX.KG</div>
+        
+        <div class="header-center">
+            <a href="https://wa.me/996501053515" class="whatsapp-header" target="_blank" title="Заказать через WhatsApp">
+                <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="white">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.815 9.815 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.14l-.3-.18l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.25 0-.43.06-.57.28c-.14.21-.68 1.1-.68 2.18c0 1.07.69 2.32.99 2.66c.3.34 1.46 2.28 3.57 3.18c.48.2.85.34 1.12.45c.48.21.92.19 1.27.12c.39-.08 1.22-.5 1.39-.98c.17-.48.17-.89.12-.98c-.05-.09-.17-.14-.36-.24c-.19-.1-1.22-.6-1.41-.67c-.19-.07-.33-.1-.47.1c-.14.2-.55.67-.68.81c-.14.14-.28.16-.52.05c-.25-.11-1.04-.38-1.98-1.23c-.73-.65-1.23-1.45-1.37-1.69c-.14-.25-.02-.38.11-.5c.11-.11.25-.29.37-.43c.12-.14.16-.25.25-.41c.09-.16.05-.3-.02-.42c-.07-.12-.65-1.58-.89-2.16c-.24-.58-.49-.5-.65-.5c-.17 0-.36-.02-.56-.02z"/>
+                </svg>
+                <span>Заказ: +996 501 053 515</span>
+            </a>
+        </div>
+        
         <div class="header-right">
             <div class="social-icons">
-                <a href="https://wa.me/996501053515" class="social-icon whatsapp-icon" target="_blank" title="Написать в WhatsApp">
-                    📱
+                <a href="https://wa.me/996501053515" class="social-icon whatsapp-social" target="_blank" title="Написать в WhatsApp">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.815 9.815 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.14l-.3-.18l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.25 0-.43.06-.57.28c-.14.21-.68 1.1-.68 2.18c0 1.07.69 2.32.99 2.66c.3.34 1.46 2.28 3.57 3.18c.48.2.85.34 1.12.45c.48.21.92.19 1.27.12c.39-.08 1.22-.5 1.39-.98c.17-.48.17-.89.12-.98c-.05-.09-.17-.14-.36-.24c-.19-.1-1.22-.6-1.41-.67c-.19-.07-.33-.1-.47.1c-.14.2-.55.67-.68.81c-.14.14-.28.16-.52.05c-.25-.11-1.04-.38-1.98-1.23c-.73-.65-1.23-1.45-1.37-1.69c-.14-.25-.02-.38.11-.5c.11-.11.25-.29.37-.43c.12-.14.16-.25.25-.41c.09-.16.05-.3-.02-.42c-.07-.12-.65-1.58-.89-2.16c-.24-.58-.49-.5-.65-.5c-.17 0-.36-.02-.56-.02z"/>
+                    </svg>
                 </a>
-                <a href="https://www.instagram.com/belek_boxkg" class="social-icon instagram-icon" target="_blank" title="Наш Instagram">
-                    📸
+                <a href="https://www.instagram.com/belek_boxkg" class="social-icon instagram-social" target="_blank" title="Наш Instagram">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+                    </svg>
                 </a>
             </div>
             <div class="cart-icon" onclick="openCartModal()">
@@ -579,7 +648,7 @@
 
     <!-- Баннер -->
     <section class="banner">
-        <h1>Подарочные боксы на 23 февраля 🎁</h1>
+        <h1 id="seasonTitle">Подарочные боксы на 23 февраля 🎁</h1>
         <p>🚗 Доставка по всему Кыргызстану</p>
         <p>🏢 Самовывоз в Бишкеке</p>
         <div class="delivery-info">
@@ -629,8 +698,8 @@
 
     <!-- Модальное окно для просмотра фото -->
     <div class="modal-overlay image-modal" id="imageModal">
-        <button class="close-modal" onclick="closeImageModal()">×</button>
         <div class="modal">
+            <button class="close-modal" onclick="closeImageModal()">×</button>
             <img id="fullSizeImage" alt="Просмотр фото товара">
         </div>
     </div>
@@ -639,11 +708,17 @@
     <footer>
         <div class="footer-contact">Контакты: +996 501 053 515, +996 500 555 626</div>
         <div class="footer-social">
-            <a href="https://wa.me/996501053515" class="whatsapp-icon" target="_blank" title="WhatsApp">
-                📱 WhatsApp
+            <a href="https://wa.me/996501053515" class="whatsapp" target="_blank" title="WhatsApp">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.815 9.815 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.14l-.3-.18l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.25 0-.43.06-.57.28c-.14.21-.68 1.1-.68 2.18c0 1.07.69 2.32.99 2.66c.3.34 1.46 2.28 3.57 3.18c.48.2.85.34 1.12.45c.48.21.92.19 1.27.12c.39-.08 1.22-.5 1.39-.98c.17-.48.17-.89.12-.98c-.05-.09-.17-.14-.36-.24c-.19-.10-1.22-.60-1.41-.67c-.19-.07-.33-.10-.47.10c-.14.20-.55.67-.68.81c-.14.14-.28.16-.52.05c-.25-.11-1.04-.38-1.98-1.23c-.73-.65-1.23-1.45-1.37-1.69c-.14-.25-.02-.38.11-.50c.11-.11.25-.29.37-.43c.12-.14.16-.25.25-.41c.09-.16.05-.30-.02-.42c-.07-.12-.65-1.58-.89-2.16c-.24-.58-.49-.50-.65-.50c-.17 0-.36-.02-.56-.02z"/>
+                </svg>
+                <span>WhatsApp</span>
             </a>
-            <a href="https://www.instagram.com/belek_boxkg" class="instagram-icon" target="_blank" title="Instagram">
-                📸 Instagram
+            <a href="https://www.instagram.com/belek_boxkg" class="instagram" target="_blank" title="Instagram">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+                </svg>
+                <span>Instagram</span>
             </a>
         </div>
         <p>© BelekBox.kg - Подарочные боксы с доставкой по Кыргызстану</p>
@@ -653,6 +728,7 @@
     <script>
         // Переменные
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let seasonTitle = "Подарочные боксы на 23 февраля 🎁"; // По умолчанию
 
         // Функции для работы с корзиной
         function updateCartCount() {
@@ -806,7 +882,7 @@
                     body: new URLSearchParams({
                         items: JSON.stringify(cart),
                         total_amount: totalAmount,
-                        client_phone: clientPhone || '',  // Изменено с client_name на client_phone
+                        client_phone: clientPhone || '',
                         client_comment: clientComment || ''
                     })
                 });
@@ -867,6 +943,23 @@
             }
         }
 
+        // Загрузка сезонного заголовка
+        function loadSeasonTitle() {
+            // Можно получать из API или localStorage
+            const savedTitle = localStorage.getItem('season_title');
+            if (savedTitle) {
+                seasonTitle = savedTitle;
+            }
+            document.getElementById('seasonTitle').textContent = seasonTitle;
+        }
+
+        // Функция для изменения заголовка (для админки или тестирования)
+        function setSeasonTitle(newTitle) {
+            seasonTitle = newTitle;
+            document.getElementById('seasonTitle').textContent = seasonTitle;
+            localStorage.setItem('season_title', newTitle);
+        }
+
         // Закрытие модальных окон при клике вне их
         document.getElementById('cartModal').addEventListener('click', function(e) {
             if (e.target === this) {
@@ -875,7 +968,8 @@
         });
 
         document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this || e.target.classList.contains('close-modal')) {
+            // Закрываем при клике в любом месте модального окна (кроме самого изображения)
+            if (e.target === this || e.target.classList.contains('modal') || e.target.classList.contains('close-modal')) {
                 closeImageModal();
             }
         });
@@ -891,6 +985,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateCartCount();
             loadProducts();
+            loadSeasonTitle();
+            
+            // Пример: можно легко изменить заголовок
+            // setSeasonTitle("Подарочные боксы на 8 марта 🌸");
         });
     </script>
 </body>
