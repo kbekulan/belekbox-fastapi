@@ -22,8 +22,12 @@ load_dotenv()
 Path("uploads/products").mkdir(parents=True, exist_ok=True)
 
 # Настройки
+# Настройки
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
-WHATSAPP_NUMBER = os.getenv("WHATSAPP_NUMBER", "996500555626")
+WHATSAPP_ORDER_NUMBER = os.getenv(
+    "WHATSAPP_ORDER_NUMBER", "996501053515"
+)  # Для заказов
+CONTACT_NUMBERS = os.getenv("CONTACT_NUMBERS", "+996 500 555 626")  # Для отображения
 BASE_DIR = Path(__file__).parent
 
 # Инициализация FastAPI
@@ -170,7 +174,7 @@ async def create_order(
         return {
             "success": True,
             "order_number": order_number,
-            "whatsapp_url": f"https://wa.me/{WHATSAPP_NUMBER}?text="
+            "whatsapp_url": f"https://wa.me/{WHATSAPP_ORDER_NUMBER}?text="
             + create_whatsapp_message(
                 order_number, items_data, total_amount, client_name, client_comment
             ),
@@ -195,7 +199,6 @@ def create_whatsapp_message(
     message += f"Комментарий: {client_comment or 'Нет комментария'}\n\n"
     message += "Самовывоз в Бишкеке."
 
-    # URL encode
     import urllib.parse
 
     return urllib.parse.quote(message)

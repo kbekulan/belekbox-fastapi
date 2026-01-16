@@ -104,6 +104,12 @@
             height: 280px;
             object-fit: cover;
             background-color: #F9FAFB;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .product-image:hover {
+            opacity: 0.9;
         }
 
         .product-info {
@@ -317,6 +323,71 @@
             color: #059669;
         }
 
+        /* Toast уведомления */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #059669;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            animation: slideIn 0.3s ease-out, fadeOut 0.3s ease-in 2.7s;
+            animation-fill-mode: forwards;
+            max-width: 300px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        /* Модальное окно для фото */
+        .image-modal .modal {
+            max-width: 90%;
+            max-height: 90%;
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .image-modal .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        #fullSizeImage {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 12px;
+        }
+
         /* Адаптивность */
         @media (max-width: 768px) {
             .products-grid {
@@ -330,6 +401,13 @@
 
             body {
                 padding: 15px;
+            }
+
+            .toast {
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
             }
         }
 
@@ -400,9 +478,17 @@
         </div>
     </div>
 
+    <!-- Модальное окно для просмотра фото -->
+    <div class="modal-overlay image-modal" id="imageModal">
+        <div class="modal">
+            <button class="close-modal" onclick="closeImageModal()">×</button>
+            <img id="fullSizeImage" alt="Просмотр фото товара">
+        </div>
+    </div>
+
     <!-- Подвал -->
     <footer>
-        <div class="footer-contact">WhatsApp: +996 500 555 626</div>
+        <div class="footer-contact">Контакты: +996 501 053 515, +996 500 555 626</div>
         <p>© BelekBox.kg - Подарочные боксы в Бишкеке. Самовывоз.</p>
     </footer>
 
@@ -437,7 +523,7 @@
             }
             
             saveCart();
-            showNotification('Товар добавлен в корзину');
+            showNotification('Товар добавлен в корзину!');
         }
 
         function removeFromCart(productId) {
@@ -473,9 +559,10 @@
             
             grid.innerHTML = products.map(product => `
                 <div class="product-card">
-                    <img src="${product.image_url || '/static/placeholder.jpg'}" 
+                    <img src="${product.image_url || 'https://via.placeholder.com/400x400/059669/FFFFFF?text=BelekBox'}" 
                          alt="${product.name}" 
                          class="product-image"
+                         onclick="openImageModal('${product.image_url || ''}')"
                          onerror="this.src='https://via.placeholder.com/400x400/059669/FFFFFF?text=BelekBox'">
                     <div class="product-info">
                         <h3 class="product-name">${product.name}</h3>
@@ -518,7 +605,7 @@
             totalElement.textContent = `Итого: ${calculateTotal()} сом`;
         }
 
-        // Модальное окно
+        // Модальное окно корзины
         function openCartModal() {
             document.getElementById('cartModal').style.display = 'flex';
             renderCartItems();
@@ -528,10 +615,23 @@
             document.getElementById('cartModal').style.display = 'none';
         }
 
+        // Модальное окно для фото
+        function openImageModal(imageUrl) {
+            if (!imageUrl) return;
+            
+            const fullSizeImage = document.getElementById('fullSizeImage');
+            fullSizeImage.src = imageUrl || 'https://via.placeholder.com/800x800/059669/FFFFFF?text=BelekBox';
+            document.getElementById('imageModal').style.display = 'flex';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
         // Заказ через WhatsApp
         async function checkout() {
             if (cart.length === 0) {
-                alert('Добавьте товары в корзину');
+                showNotification('Добавьте товары в корзину');
                 return;
             }
             
@@ -564,19 +664,37 @@
                     // Открываем WhatsApp
                     window.open(result.whatsapp_url, '_blank');
                     
-                    alert('Заказ оформлен! Откройте WhatsApp для отправки.');
+                    showNotification('Заказ оформлен! Откройте WhatsApp для отправки.');
                 } else {
-                    alert('Ошибка при оформлении заказа');
+                    showNotification('Ошибка при оформлении заказа');
                 }
             } catch (error) {
                 console.error('Ошибка:', error);
-                alert('Ошибка при оформлении заказа');
+                showNotification('Ошибка при оформлении заказа');
             }
         }
 
-        // Уведомления
+        // Toast уведомления
         function showNotification(message) {
-            alert(message); // Временное решение
+            // Удаляем старый toast если есть
+            const oldToast = document.querySelector('.toast');
+            if (oldToast) {
+                oldToast.remove();
+            }
+            
+            // Создаем новый toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Автоматически удаляем через 3 секунды
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
         }
 
         // Загрузка товаров при загрузке страницы
@@ -591,10 +709,16 @@
             }
         }
 
-        // Закрытие модального окна при клике вне его
+        // Закрытие модальных окон при клике вне их
         document.getElementById('cartModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeCartModal();
+            }
+        });
+
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeImageModal();
             }
         });
 
