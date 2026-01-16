@@ -12,6 +12,7 @@ import json
 import uuid
 from dotenv import load_dotenv
 from typing import Optional
+from pydantic import BaseModel
 import shutil
 
 # Загружаем переменные окружения
@@ -204,6 +205,229 @@ def create_whatsapp_message(
 @app.get("/api/health")
 async def health_check():
     return {"status": "ok", "timestamp": datetime.now().isoformat()}
+
+
+# ============================================
+# АДМИНСКИЕ ЭНДПОИНТЫ
+# ============================================
+
+
+# Зависимость для проверки пароля админа
+def verify_admin(request: Request):
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Не авторизован")
+
+    token = auth_header.split(" ")[1]
+    if token != ADMIN_PASSWORD:
+        raise HTTPException(status_code=401, detail="Неверный пароль")
+
+    return True
+
+
+# Вход в админку
+from pydantic import BaseModel
+
+
+class LoginRequest(BaseModel):
+    password: str
+
+
+@app.post("/api/admin/login")
+async def admin_login(request: LoginRequest):
+    if request.password == ADMIN_PASSWORD:
+        return {"success": True, "token": ADMIN_PASSWORD}
+    return {"success": False, "error": "Неверный пароль"}
+
+
+# Получение всех товаров (админ)
+@app.get("/api/admin/products")
+async def admin_get_products(
+    verified: bool = Depends(verify_admin), db: Session = Depends(get_db)
+):
+    products = db.query(Product).order_by(Product.sort_order, Product.id).all()
+    return [
+        {
+            "id": p.id,
+            "name": p.name,
+            "description": p.description,
+            "price": p.price,
+            "image_url": p.image_url,
+            "is_available": p.is_available,
+            "sort_order": p.sort_order,
+            "created_at": p.created_at.isoformat() if p.created_at else None,
+        }
+        for p in products
+    ]
+
+
+# Добавление товара
+@app.post("/api/admin/products")
+async def admin_create_product(
+    name: str = Form(...),
+    description: str = Form(...),
+    price: int = Form(...),
+    is_available: bool = Form(True),
+    sort_order: int = Form(0),
+    image: Optional[UploadFile] = File(None),
+    verified: bool = Depends(verify_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        image_url = None
+        if image:
+            # Создаем уникальное имя файла
+            file_extension = os.path.splitext(image.filename)[1]
+            filename = f"{uuid.uuid4().hex}{file_extension}"
+            file_path = f"uploads/products/{filename}"
+
+            # Сохраняем файл
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(image.file, buffer)
+
+            image_url = f"/uploads/products/{filename}"
+
+        product = Product(
+            name=name,
+            description=description,
+            price=price,
+            image_url=image_url,
+            is_available=is_available,
+            sort_order=sort_order,
+        )
+
+        db.add(product)
+        db.commit()
+        db.refresh(product)
+
+        return {"success": True, "product_id": product.id}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# Обновление товара
+@app.put("/api/admin/products/{product_id}")
+async def admin_update_product(
+    product_id: int,
+    name: Optional[str] = Form(None),
+    description: Optional[str] = Form(None),
+    price: Optional[int] = Form(None),
+    is_available: Optional[bool] = Form(None),
+    sort_order: Optional[int] = Form(None),
+    image: Optional[UploadFile] = File(None),
+    verified: bool = Depends(verify_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Товар не найден")
+
+        # Обновляем поля
+        if name is not None:
+            product.name = name
+        if description is not None:
+            product.description = description
+        if price is not None:
+            product.price = price
+        if is_available is not None:
+            product.is_available = is_available
+        if sort_order is not None:
+            product.sort_order = sort_order
+
+        # Обновляем изображение если нужно
+        if image:
+            # Удаляем старое изображение если было
+            if product.image_url:
+                old_path = product.image_url.replace("/uploads/", "uploads/")
+                if os.path.exists(old_path):
+                    os.remove(old_path)
+
+            # Сохраняем новое
+            file_extension = os.path.splitext(image.filename)[1]
+            filename = f"{uuid.uuid4().hex}{file_extension}"
+            file_path = f"uploads/products/{filename}"
+
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(image.file, buffer)
+
+            product.image_url = f"/uploads/products/{filename}"
+
+        db.commit()
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# Удаление товара
+@app.delete("/api/admin/products/{product_id}")
+async def admin_delete_product(
+    product_id: int,
+    verified: bool = Depends(verify_admin),
+    db: Session = Depends(get_db),
+):
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Товар не найден")
+
+        # Удаляем изображение если есть
+        if product.image_url:
+            image_path = product.image_url.replace("/uploads/", "uploads/")
+            if os.path.exists(image_path):
+                os.remove(image_path)
+
+        db.delete(product)
+        db.commit()
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# Получение всех заказов
+@app.get("/api/admin/orders")
+async def admin_get_orders(
+    verified: bool = Depends(verify_admin), db: Session = Depends(get_db)
+):
+    orders = db.query(Order).order_by(Order.created_at.desc()).all()
+    return [
+        {
+            "id": o.id,
+            "order_number": o.order_number,
+            "items": json.loads(o.items_json),
+            "client_name": o.client_name,
+            "client_comment": o.client_comment,
+            "total_amount": o.total_amount,
+            "created_at": o.created_at.isoformat() if o.created_at else None,
+        }
+        for o in orders
+    ]
+
+
+# Скрыть все товары
+@app.post("/api/admin/hide-all")
+async def admin_hide_all(
+    verified: bool = Depends(verify_admin), db: Session = Depends(get_db)
+):
+    try:
+        db.query(Product).update({Product.is_available: False})
+        db.commit()
+        return {"success": True, "hidden": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# Показать все товары
+@app.post("/api/admin/show-all")
+async def admin_show_all(
+    verified: bool = Depends(verify_admin), db: Session = Depends(get_db)
+):
+    try:
+        db.query(Product).update({Product.is_available: True})
+        db.commit()
+        return {"success": True, "shown": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
 
 
 if __name__ == "__main__":
