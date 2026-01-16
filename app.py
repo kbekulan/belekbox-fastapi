@@ -74,7 +74,7 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     order_number = Column(String, unique=True, nullable=False)
     items_json = Column(Text, nullable=False)
-    client_name = Column(String)
+    client_phone = Column(String)  # Заменяем client_name на client_phone
     client_comment = Column(String)
     total_amount = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
@@ -150,19 +150,18 @@ async def get_products(db: Session = Depends(get_db)):
 async def create_order(
     items: str = Form(...),
     total_amount: int = Form(...),
-    client_name: Optional[str] = Form(None),
+    client_phone: Optional[str] = Form(None),  # Заменяем client_name на client_phone
     client_comment: Optional[str] = Form(None),
     db: Session = Depends(get_db),
 ):
     try:
-        # Проверяем валидность items
         items_data = json.loads(items)
 
         order_number = generate_order_number()
         order = Order(
             order_number=order_number,
             items_json=items,
-            client_name=client_name,
+            client_phone=client_phone,  # Заменяем client_name на client_phone
             client_comment=client_comment,
             total_amount=total_amount,
         )
@@ -176,7 +175,7 @@ async def create_order(
             "order_number": order_number,
             "whatsapp_url": f"https://wa.me/{WHATSAPP_ORDER_NUMBER}?text="
             + create_whatsapp_message(
-                order_number, items_data, total_amount, client_name, client_comment
+                order_number, items_data, total_amount, client_phone, client_comment
             ),
         }
     except Exception as e:
@@ -185,7 +184,7 @@ async def create_order(
 
 # Функция для создания сообщения WhatsApp
 def create_whatsapp_message(
-    order_number, items, total_amount, client_name, client_comment
+    order_number, items, total_amount, client_phone, client_comment
 ):
     message = "Здравствуйте! Хочу заказать:\n\n"
     message += f"Заказ #{order_number}\n\n"
@@ -195,9 +194,9 @@ def create_whatsapp_message(
         message += f"{i}. {item['name']} - {item['quantity']} шт. × {item['price']} сом = {item['quantity'] * item['price']} сом\n"
 
     message += f"\nИтого: {total_amount} сом\n\n"
-    message += f"Имя: {client_name or 'Не указано'}\n"
+    message += f"Телефон: {client_phone or 'Не указан'}\n"
     message += f"Комментарий: {client_comment or 'Нет комментария'}\n\n"
-    message += "Самовывоз в Бишкеке."
+    message += "Доставка по всему Кыргызстану. Самовывоз в Бишкеке."
 
     import urllib.parse
 
@@ -398,7 +397,7 @@ async def admin_get_orders(
             "id": o.id,
             "order_number": o.order_number,
             "items": json.loads(o.items_json),
-            "client_name": o.client_name,
+            "client_phone": o.client_phone,  # Заменяем client_name на client_phone
             "client_comment": o.client_comment,
             "total_amount": o.total_amount,
             "created_at": o.created_at.isoformat() if o.created_at else None,
