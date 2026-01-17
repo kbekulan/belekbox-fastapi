@@ -6,3 +6,4 @@ database.db
 uploads/
 .DS_Store
 " > .gitignore
+venv/
