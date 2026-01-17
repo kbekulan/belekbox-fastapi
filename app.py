@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 from typing import Optional
 from pydantic import BaseModel
 import shutil
+import urllib.parse
 
 # Загружаем переменные окружения
 load_dotenv()
@@ -44,7 +45,7 @@ app.add_middleware(
 
 # Статические файлы
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
 # База данных
 SQLALCHEMY_DATABASE_URL = "sqlite:///./database.db"
 engine = create_engine(
