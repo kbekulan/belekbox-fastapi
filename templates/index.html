@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BelekBox.kg - Подарочные боксы с доставкой по Кыргызстану</title>
+    <meta name="description" content="Подарочные боксы с доставкой по всему Кыргызстану. Самовывоз в Бишкеке.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="apple-touch-icon" href="/static/favicon.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="font-sans text-gray-900">
+    <!-- Шапка сайта с заголовком в одной линии -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <!-- Логотип и заголовок -->
+                <div class="header-left">
+                    <a href="/" class="logo" aria-label="BelekBox.kg - Главная">
+                        <span class="logo-text">BELEKBOX.KG</span>
+                    </a>
+                    <div class="header-title">
+                        <h1 class="main-title">Подарочные боксы с доставкой 🎁</h1>
+                        <p class="subtitle">🚗 По всему Кыргызстану • 🏢 Самовывоз в Бишкеке</p>
+                    </div>
+                </div>
+
+                <!-- Правая часть: WhatsApp и корзина -->
+                <div class="header-right">
+                    <!-- Кнопка WhatsApp -->
+                    <a href="https://wa.me/996501053515" 
+                       class="whatsapp-btn"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="Заказать в WhatsApp">
+                        <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.815 9.815 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.14l-.3-.18l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.25 0-.43.06-.57.28c-.14.21-.68 1.1-.68 2.18c0 1.07.69 2.32.99 2.66c.3.34 1.46 2.28 3.57 3.18c.48.2.85.34 1.12.45c.48.21.92.19 1.27.12c.39-.08 1.22-.5 1.39-.98c.17-.48.17-.89.12-.98c-.05-.09-.17-.14-.36-.24c-.19-.1-1.22-.6-1.41-.67c-.19-.07-.33-.1-.47.1c-.14.2-.55.67-.68.81c-.14.14-.28.16-.52.05c-.25-.11-1.04-.38-1.98-1.23c-.73-.65-1.23-1.45-1.37-1.69c-.14-.25-.02-.38.11-.5c.11-.11.25-.29.37-.43c.12-.14.16-.25.25-.41c.09-.16.05-.3-.02-.42c-.07-.12-.65-1.58-.89-2.16c-.24-.58-.49-.5-.65-.5c-.17 0-.36-.02-.56-.02z"/>
+                        </svg>
+                        <span class="whatsapp-number">+996 501 053 515</span>
+                    </a>
+
+                    <!-- Корзина -->
+                    <button class="cart-btn" id="cartButton" aria-label="Открыть корзину">
+                        <span class="cart-icon">🛒</span>
+                        <span class="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент: сразу товары -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Сортировка над товарами -->
+            <div class="products-header">
+                <select class="sort-select" id="sortSelect">
+                    <option value="default">По популярности</option>
+                    <option value="price_asc">Дешевле сначала</option>
+                    <option value="price_desc">Дороже сначала</option>
+                </select>
+            </div>
+            
+            <!-- Товары -->
+            <div class="products-grid" id="productsGrid">
+                <div class="skeleton-grid">
+                    <div class="product-card skeleton">
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-text short"></div>
+                        <div class="skeleton-button"></div>
+                    </div>
+                    <div class="product-card skeleton">
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-text short"></div>
+                        <div class="skeleton-button"></div>
+                    </div>
+                    <div class="product-card skeleton">
+                        <div class="skeleton-image"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-text short"></div>
+                        <div class="skeleton-button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FAQ -->
+    <section class="faq-simple">
+        <div class="container">
+            <h2 class="faq-title">Вопросы</h2>
+            
+            <div class="faq-grid" id="faqGrid">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Какой срок доставки?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>По Бишкеку - 1-2 дня, по регионам - 3-7 дней.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Есть ли доставка в регионы?
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Да, доставляем по всему Кыргызстану.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contacts-simple">
+        <div class="container">
+            <h2 class="contacts-title">Контакты</h2>
+            <div class="contacts-info">
+                <a href="tel:+996501053515" class="contact-phone">+996 501 053 515</a>
+                <a href="https://wa.me/996501053515" target="_blank" class="contact-whatsapp">WhatsApp</a>
+                <a href="https://instagram.com/belek_boxkg" target="_blank" class="contact-instagram">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">BELEKBOX.KG</p>
+                <p class="footer-note">Доставка по всему Кыргызстану</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно корзины -->
+    <div class="modal-overlay" id="cartModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Корзина</h2>
+                <button class="close-modal" id="closeCartModal" aria-label="Закрыть">
+                    ×
+                </button>
+            </div>
+
+            <div class="cart-items" id="cartItems">
+                <div class="empty-cart">
+                    <div class="empty-icon">🛒</div>
+                    <h3>Корзина пуста</h3>
+                    <p>Добавьте товары из каталога</p>
+                </div>
+            </div>
+
+            <div class="cart-total" id="cartTotal">
+                <span>Итого:</span>
+                <span class="total-amount">0 сом</span>
+            </div>
+
+            <form class="cart-form" id="orderForm">
+                <div class="form-group">
+                    <label for="clientPhone" class="form-label">
+                        Номер телефона (необязательно)
+                    </label>
+                    <input type="tel" 
+                           id="clientPhone" 
+                           class="form-input"
+                           placeholder="+996 ___ ___ ___"
+                           aria-label="Номер телефона для связи">
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientComment" class="form-label">
+                        Комментарий к заказу
+                    </label>
+                    <textarea id="clientComment" 
+                              class="form-textarea"
+                              placeholder="Особые пожелания, адрес доставки..."
+                              aria-label="Комментарий к заказу"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" 
+                            class="btn btn-secondary"
+                            id="clearCartBtn">
+                        Очистить
+                    </button>
+                    <button type="button" 
+                            class="btn btn-primary checkout-btn"
+                            id="checkoutBtn">
+                        Заказать в WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно фото -->
+    <div class="modal-overlay image-modal" id="imageModal">
+        <div class="modal">
+            <button class="close-modal" id="closeImageModal" aria-label="Закрыть">
+                ×
+            </button>
+            <img id="fullSizeImage" 
+                 alt="Просмотр фото товара"
+                 class="modal-image"
+                 loading="lazy">
+        </div>
+    </div>
+
+    <!-- Кнопка WhatsApp для мобильных -->
+    <a href="https://wa.me/996501053515" 
+       class="mobile-whatsapp"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Заказать в WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91c0-2.65-1.03-5.14-2.9-7.01A9.815 9.815 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23c-1.48 0-2.93-.39-4.19-1.14l-.3-.18l-3.12.82l.83-3.04l-.2-.32a8.188 8.188 0 0 1-1.26-4.38c.01-4.54 3.7-8.24 8.25-8.24M8.53 7.33c-.25 0-.43.06-.57.28c-.14.21-.68 1.1-.68 2.18c0 1.07.69 2.32.99 2.66c.3.34 1.46 2.28 3.57 3.18c.48.2.85.34 1.12.45c.48.21.92.19 1.27.12c.39-.08 1.22-.5 1.39-.98c.17-.48.17-.89.12-.98c-.05-.09-.17-.14-.36-.24c-.19-.1-1.22-.6-1.41-.67c-.19-.07-.33-.1-.47.1c-.14.2-.55.67-.68.81c-.14.14-.28.16-.52.05c-.25-.11-1.04-.38-1.98-1.23c-.73-.65-1.23-1.45-1.37-1.69c-.14-.25-.02-.38.11-.5c.11-.11.25-.29.37-.43c.12-.14.16-.25.25-.41c.09-.16.05-.3-.02-.42c-.07-.12-.65-1.58-.89-2.16c-.24-.58-.49-.5-.65-.5c-.17 0-.36-.02-.56-.02z"/>
+        </svg>
+        <span>Заказать</span>
+    </a>
+
+    <!-- Подключение скрипта -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ панель - BelekBox.kg</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="stylesheet" href="/static/css/admin.css">
+</head>
+<body>
+    <!-- Экран логина -->
+    <div id="loginScreen" class="login-container">
+        <h1 class="login-title">Вход в админку</h1>
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" placeholder="Введите пароль из .env файла">
+        </div>
+        <button class="btn" onclick="login()" style="width: 100%;">Войти</button>
+        <div id="loginError" class="error" style="display: none;">Неверный пароль</div>
+    </div>
+
+    <!-- Админ панель -->
+    <div id="adminScreen" style="display: none;">
+        <div class="container">
+            <div class="header">
+                <h1>Админ панель BelekBox.kg</h1>
+                <button class="btn btn-secondary" onclick="logout()">Выйти</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('products')">Товары</button>
+                <button class="tab" onclick="showTab('orders')">Заказы</button>
+                <button class="tab" onclick="showTab('settings')">Быстрые действия</button>
+            </div>
+
+            <!-- Товары -->
+            <div id="productsSection" class="section active">
+                <div class="section-header">
+                    <h2 class="section-title">Управление товарами</h2>
+                    <button class="btn" onclick="showAddProductModal()">Добавить товар</button>
+                </div>
+                <div class="table-container">
+                    <table id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Фото</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th>Цена</th>
+                                <th>Статус</th>
+                                <th>Сортировка</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Товары загружаются через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Заказы -->
+            <div id="ordersSection" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Заказы</h2>
+                </div>
+                <div class="table-container">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Номер заказа</th>
+                                <th>Дата</th>
+                                <th>Товары</th>
+                                <th>Сумма</th>
+                                <th>Телефон</th>
+                                <th>Комментарий</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Заказы загружаются через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Быстрые действия -->
+            <div id="settingsSection" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Быстрые действия</h2>
+                </div>
+                <div style="display: grid; gap: 20px; max-width: 400px;">
+                    <button class="btn btn-danger" onclick="hideAllProducts()">
+                        Скрыть все товары
+                    </button>
+                    <p style="color: #6B7280;">Используйте перед сменой сезона</p>
+
+                    <button class="btn" onclick="showAllProducts()">
+                        Показать все товары
+                    </button>
+                    <p style="color: #6B7280;">Сделать все товары видимыми</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления/редактирования товара -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Добавить товар</h2>
+                <button class="close-modal" onclick="closeProductModal()">×</button>
+            </div>
+
+            <form id="productForm" onsubmit="return saveProduct(event)">
+                <input type="hidden" id="productId">
+                
+                <div class="form-group">
+                    <label for="productName">Название товара *</label>
+                    <input type="text" id="productName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productDescription">Описание (что внутри) *</label>
+                    <textarea id="productDescription" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="productPrice">Цена (сом) *</label>
+                    <input type="number" id="productPrice" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="productSortOrder">Порядок сортировки</label>
+                    <input type="number" id="productSortOrder" min="0" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="productAvailable">Статус</label>
+                    <select id="productAvailable">
+                        <option value="true">Доступен</option>
+                        <option value="false">Скрыт</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="productImage">Фото товара (квадратное, качественное)</label>
+                    <input type="file" id="productImage" accept=".jpg,.jpeg,.png,.webp">
+                    <img id="imagePreview" class="product-image-preview" style="display: none;">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 30px;">
+                    <button type="submit" class="btn" style="flex: 1;">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/admin.js"></script>
+</body>
+</html>

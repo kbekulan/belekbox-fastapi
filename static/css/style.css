@@ -1,0 +1,860 @@
+/* ===== CSS ПЕРЕМЕННЫЕ ===== */
+:root {
+    --primary: #1E40AF;      /* Темно-синий основной */
+    --primary-light: #3B82F6; /* Синий светлее */
+    --text: #FFFFFF;         /* Белый текст на темном фоне */
+    --text-light: #D1D5DB;   /* Светло-серый текст */
+    --bg: #0F172A;           /* Темно-синий фон как favicon */
+    --bg-card: #1E293B;      /* Темно-синий для карточек */
+    --border: #334155;       /* Границы */
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --radius: 10px;
+}
+
+/* ===== ОСНОВНЫЕ СТИЛИ ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--bg);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ===== ШАПКА В ОДНУ ЛИНИЮ ===== */
+.header {
+    background: var(--bg);
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Левая часть: логотип и заголовок */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.logo {
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: 1px;
+}
+
+.header-title {
+    flex: 1;
+}
+
+.main-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Правая часть: WhatsApp и корзина */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+/* Кнопка WhatsApp в шапке */
+.whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.whatsapp-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.whatsapp-number {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Кнопка корзины */
+.cart-btn {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary-light);
+}
+
+.cart-icon {
+    font-size: 24px;
+    color: var(--text);
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    min-width: 22px;
+    height: 22px;
+    background: #EF4444;
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg);
+}
+
+/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+.main-content {
+    padding: 30px 0 50px;
+}
+
+/* Заголовок сортировки */
+.products-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}
+
+.sort-select {
+    padding: 10px 15px;
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+/* Сетка товаров */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* Карточка товара */
+.product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    background: #1a202c;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.product-image:hover {
+    opacity: 0.9;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.product-description {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+    height: 42px;
+    overflow: hidden;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.fixed.inset-0 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.fixed.inset-0 .relative {
+    margin: auto !important;
+}
+
+.product-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-light);
+    margin-bottom: 15px;
+}
+
+.add-to-cart-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.add-to-cart-btn:hover {
+    background: var(--primary-light);
+}
+
+/* Skeleton loading */
+.skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #1a202c 25%, #2d3748 50%, #1a202c 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: var(--radius);
+}
+
+.skeleton-image {
+    width: 100%;
+    height: 250px;
+    background: #2d3748;
+}
+
+.skeleton-text {
+    height: 16px;
+    background: #2d3748;
+    margin: 15px 20px;
+    border-radius: 4px;
+}
+
+.skeleton-text.short {
+    width: 60%;
+}
+
+.skeleton-button {
+    height: 44px;
+    background: #2d3748;
+    margin: 15px 20px;
+    border-radius: var(--radius);
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ===== FAQ ===== */
+.faq-simple {
+    padding: 50px 0;
+    background: var(--bg-card);
+    margin-top: 20px;
+}
+
+.faq-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text);
+}
+
+.faq-grid {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.faq-icon {
+    font-size: 20px;
+    color: var(--primary-light);
+}
+
+.faq-answer {
+    padding: 0 15px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s;
+}
+
+.faq-answer p {
+    padding-bottom: 15px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* ===== КОНТАКТЫ ===== */
+.contacts-simple {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.contacts-title {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: var(--text);
+}
+
+.contacts-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.contact-phone,
+.contact-whatsapp,
+.contact-instagram {
+    font-size: 18px;
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+}
+
+.contact-phone:hover,
+.contact-whatsapp:hover,
+.contact-instagram:hover {
+    color: var(--text);
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* ===== ПОДВАЛ ===== */
+.footer-simple {
+    padding: 30px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    background: var(--bg-card);
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 1px;
+}
+
+.footer-note {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* ===== МОДАЛЬНЫЕ ОКНА ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal {
+    width: 100%;
+    max-width: 500px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-light);
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+}
+
+.close-modal:hover {
+    color: var(--text);
+}
+
+.cart-items {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+    color: var(--text-light);
+}
+
+.empty-cart h3 {
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.empty-cart p {
+    color: var(--text-light);
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-item-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
+.cart-item-price {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.cart-item-quantity {
+    min-width: 40px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.remove-item {
+    background: none;
+    border: none;
+    color: #EF4444;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+}
+
+.remove-item:hover {
+    text-decoration: underline;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cart-total span:first-child {
+    color: var(--text);
+}
+
+.total-amount {
+    color: var(--primary-light);
+    font-size: 22px;
+}
+
+.cart-form {
+    padding: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 16px;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.form-textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-light);
+}
+
+.btn-secondary {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--border);
+}
+
+/* Модальное окно фото */
+.image-modal .modal {
+    max-width: 90%;
+    max-height: 90%;
+    background: transparent;
+    border: none;
+}
+
+.image-modal .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border: 2px solid white;
+}
+
+.modal-image {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Кнопка WhatsApp для мобильных */
+.mobile-whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    transition: transform 0.2s;
+}
+
+.mobile-whatsapp:hover {
+    transform: translateY(-2px);
+}
+
+.mobile-whatsapp svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 1024px) {
+    .header-left {
+        min-width: 250px;
+    }
+    
+    .main-title {
+        font-size: 20px;
+    }
+    
+    .whatsapp-number {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .header-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .header-right {
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .main-title {
+        font-size: 18px;
+    }
+    
+    .subtitle {
+        font-size: 13px;
+        flex-wrap: wrap;
+    }
+    
+    .whatsapp-btn {
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .contacts-info {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .contact-phone,
+    .contact-whatsapp,
+    .contact-instagram {
+        width: 200px;
+        justify-content: center;
+    }
+    
+    .mobile-whatsapp {
+        display: flex;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    button,
+    .add-to-cart-btn {
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-title {
+        font-size: 16px;
+    }
+    
+    .logo-text {
+        font-size: 20px;
+    }
+    
+    .whatsapp-number {
+        font-size: 14px;
+    }
+}
