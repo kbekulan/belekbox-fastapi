@@ -22,6 +22,7 @@ from sqlalchemy.orm import sessionmaker, Session
 
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
 
 # ===== КОНФИГУРАЦИЯ =====
 
@@ -597,6 +598,20 @@ async def admin_show_all(
         return {"success": True, "shown": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+
+# ===== ДОПОЛНИТЕЛЬНЫЙ МАРШРУТ ДЛЯ FAVICON =====
+
+
+@app.get("/favicon.ico")
+async def favicon():
+    """
+    Отдаем favicon.
+    """
+    favicon_path = BASE_DIR / "static" / "images" / "favicon.png"
+    if favicon_path.exists():
+        return FileResponse(favicon_path)
+    raise HTTPException(status_code=404, detail="Favicon not found")
 
 
 # ===== ТОЧКА ВХОДА =====
