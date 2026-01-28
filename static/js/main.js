@@ -122,40 +122,22 @@ function validatePhoneNumber(phone) {
 
 function formatPhoneNumber(event) {
     const input = event.target;
-    let phone = cleanPhoneNumber(input.value);
     
-    // Добавляем префикс при необходимости
-    if (phone.startsWith('996') && !phone.startsWith('+996')) {
-        phone = '+' + phone;
-    } else if (phone.startsWith('0') && phone.length >= 10) {
-        phone = '+996' + phone.substring(1);
-    } else if (phone.length === 9 && !phone.startsWith('0')) {
-        phone = '+996' + phone;
-    }
+    // Простая валидация без автоматического форматирования
+    const validation = validatePhoneNumber(input.value);
     
-    // Форматируем
-    let formattedPhone = phone;
-    if (phone.startsWith('+996') && phone.length > 4) {
-        const rest = phone.substring(4);
-        formattedPhone = `+996 ${rest.substring(0, 3)} ${rest.substring(3, 6)} ${rest.substring(6, 9)}`.trim();
-    }
-    
-    if (input.value !== formattedPhone) {
-        input.value = formattedPhone;
-        
-        // Визуальная обратная связь
-        const validation = validatePhoneNumber(formattedPhone);
-        input.style.borderColor = formattedPhone && !validation.isValid ? '#DC2626' : '#059669';
-        
-        if (validation.isValid) {
-            setTimeout(() => {
-                input.style.borderColor = '#E2E8F0';
-            }, 1000);
-        }
+    // Меняем цвет рамки в зависимости от валидности
+    if (input.value && !validation.isValid) {
+        input.style.borderColor = '#DC2626';
+        input.style.boxShadow = '0 0 0 1px rgba(220, 38, 38, 0.1)';
+    } else if (input.value && validation.isValid) {
+        input.style.borderColor = '#059669';
+        input.style.boxShadow = '0 0 0 1px rgba(5, 150, 105, 0.1)';
+    } else {
+        input.style.borderColor = '#E2E8F0';
+        input.style.boxShadow = 'none';
     }
 }
-
-// ===== ФУНКЦИИ ДЛЯ ТЕГОВ И АНИМАЦИЙ =====
 
 // ===== ФУНКЦИИ ДЛЯ ТЕГОВ И АНИМАЦИЙ =====
 
@@ -943,10 +925,11 @@ function setupEventListeners() {
         checkoutBtn.addEventListener('click', checkout);
     }
     
-    // Форматирование телефона
+    // Форматирование телефона - ТОЛЬКО ВАЛИДАЦИЯ
     const phoneInput = document.getElementById('clientPhone');
     if (phoneInput) {
         phoneInput.addEventListener('input', formatPhoneNumber);
+        phoneInput.addEventListener('blur', formatPhoneNumber);
     }
     
     // Сортировка
