@@ -10,20 +10,19 @@ __pycache__/
 *.pyd
 *.pyc
 
-# Database
-*.db
-database.db
-
 # Environment
 .env
 .env.local
+.env.production
 
-# Uploads
+# Uploads (временные файлы)
 uploads/
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
@@ -32,3 +31,18 @@ desktop.ini
 
 # Logs
 *.log
+logs/
+
+# Railway / Production
+railway.toml
+Procfile  # если не используете
+nixpacks.toml  # если не используете
+
+# Database (включаем, так как будем использовать PostgreSQL на Railway)
+*.db
+database.db  # НЕ заливаем SQLite в репозиторий
+
+# Python packaging
+*.egg-info/
+dist/
+build/
