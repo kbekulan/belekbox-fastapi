@@ -614,15 +614,11 @@ async def favicon():
     raise HTTPException(status_code=404, detail="Favicon not found")
 
 
-# ===== ТОЧКА ВХОДА =====
+# ===== ТОЧКА ВХОДА ДЛЯ RAILWAY =====
 
 if __name__ == "__main__":
     import uvicorn
+    import os
 
-    # Запуск сервера для разработки
-    uvicorn.run(
-        app,
-        host="0.0.0.0",  # Доступ с любых IP
-        port=8000,  # Порт по умолчанию
-        reload=True,  # Автоматическая перезагрузка при изменениях
-    )
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port, reload=False)
