@@ -17,12 +17,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, DateTime, Text
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
 from dotenv import load_dotenv
 from pydantic import BaseModel
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
+from pathlib import Path
 
 # ===== КОНФИГУРАЦИЯ =====
 
@@ -621,4 +622,4 @@ if __name__ == "__main__":
     import os
 
     port = int(os.getenv("PORT", 8000))  # <- вот это важно
-    uvicorn.run(app, host="0.0.0.0", port=port, reload=False)
+    uvicorn.run(app, host="localhost", port=port, reload=False)
